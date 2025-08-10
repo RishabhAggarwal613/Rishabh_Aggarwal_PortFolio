@@ -1,0 +1,187 @@
+@import "tailwindcss";
+
+/* ===== Base Theme (fallback) ===== */
+@theme {
+  --color-primary: #a855f7;
+  --color-accent: #06b6d4;   /* cyan */
+  --color-accent-2: #f59e0b; /* amber */
+  --color-glow: #e9d5ff;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  background: radial-gradient(1200px 800px at 20% 10%, var(--color-bg-2, #14082e), var(--color-bg-1, #06021a));
+  color: white;
+}
+
+.section {
+  max-width: 72rem;
+  margin-left: auto; margin-right: auto;
+  padding-left: clamp(1rem, 4vw, 2rem);
+  padding-right: clamp(1rem, 4vw, 2rem);
+  padding-top: clamp(4rem, 6vw, 6rem);
+  padding-bottom: clamp(4rem, 6vw, 6rem);
+}
+
+/* ===== Palettes ===== */
+:root[data-theme="cosmic"]{
+  --color-primary:#a855f7; --color-accent:#06b6d4; --color-accent-2:#f59e0b; --color-glow:#e9d5ff;
+  --color-bg-1:#06021a; --color-bg-2:#14082e;
+}
+:root[data-theme="aurora"]{
+  --color-primary:#22d3ee; --color-accent:#34d399; --color-accent-2:#f472b6; --color-glow:#cffafe;
+  --color-bg-1:#001219; --color-bg-2:#04141f;
+}
+:root[data-theme="sunset"]{
+  --color-primary:#fb7185; --color-accent:#f59e0b; --color-accent-2:#8b5cf6; --color-glow:#ffd6a5;
+  --color-bg-1:#160708; --color-bg-2:#2a0a0d;
+}
+:root[data-theme="neon"]{
+  --color-primary:#fcd34d; --color-accent:#22d3ee; --color-accent-2:#f472b6; --color-glow:#fef9c3;
+  --color-bg-1:#020202; --color-bg-2:#000000;
+}
+
+/* High-contrast mode boosts borders/text and shadows */
+:root[data-contrast="high"]{
+  --hc-border: 3px;
+  --hc-shadow: 0 14px 50px rgba(255,255,255,.15);
+  --hc-text: 1;
+}
+
+/* Modern animations */
+@keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+@keyframes spinSlow { to { transform: rotate(360deg) } }
+@keyframes pulseGlow {
+  0%,100% { box-shadow: 0 0 0 0 rgba(168,85,247,0.5) }
+  50% { box-shadow: 0 0 40px 6px rgba(168,85,247,0.25) }
+}
+
+/* Panels with colorful border gradient */
+.panel {
+  border-radius: 18px;
+  background: color-mix(in oklab, white 6%, transparent);
+  backdrop-filter: blur(8px);
+  border: var(--hc-border, 2px) solid transparent;
+  border-image: linear-gradient(135deg, black, var(--color-primary), var(--color-accent-2)) 1;
+  box-shadow: 8px 8px 0 0 black, var(--hc-shadow, 0 10px 40px rgba(168,85,247,.25));
+}
+.title { font-weight: 900; letter-spacing: .5px; text-shadow: 2px 2px 0 black; }
+
+/* Buttons with gradient */
+.btn {
+  display: inline-flex; align-items: center; gap: .5rem;
+  padding: .65rem 1rem; border-radius: .8rem;
+  border: var(--hc-border, 2px) solid black;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-accent));
+  color: black; font-weight: 700;
+  box-shadow: 6px 6px 0 0 black;
+  transition: transform .2s ease, box-shadow .2s ease, filter .2s ease;
+}
+.btn:hover { transform: translateY(-1px); box-shadow: 8px 8px 0 0 black; filter: saturate(1.15); }
+
+/* Gradient text helper */
+.grad-text {
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-accent-2));
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: saturate(calc(1 + var(--hc-text, 0)*.2));
+}
+
+/* Chips */
+.chip {
+  font-size: .75rem; padding: .25rem .5rem; border-radius: 9999px;
+  border: var(--hc-border, 2px) solid black;
+  background: linear-gradient(135deg, color-mix(in oklab, var(--color-primary) 40%, white 10%), color-mix(in oklab, var(--color-accent-2) 30%, white 10%));
+  color: black; font-weight: 700; box-shadow: 3px 3px 0 0 black;
+}
+
+/* Comic elements (from prior step) */
+.bubble { position: relative; border: var(--hc-border, 3px) solid black; background: white; color: black; border-radius: 18px; padding: .85rem 1rem; }
+.bubble:after { content: ""; position: absolute; left: 20px; bottom: -14px; width: 0; height: 0; border: 8px solid transparent; border-top-color: black; }
+.bubble:before { content: ""; position: absolute; left: 20px; bottom: -10px; width: 0; height: 0; border: 8px solid transparent; border-top-color: white; z-index: 1; }
+
+/* Reveal */
+.reveal { opacity: 0; transform: translateY(16px) scale(.98); transition: opacity .6s ease, transform .6s ease; }
+.reveal.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+
+/* Image skeleton */
+.img-skel { background: linear-gradient(90deg, rgba(255,255,255,.08), rgba(255,255,255,.2), rgba(255,255,255,.08)); background-size: 200% 100%; animation: skel 1.2s ease-in-out infinite; }
+@keyframes skel { 0%{background-position: 200% 0} 100%{background-position: -200% 0} }
+
+/* Doctor Strange portal */
+.portal { position:absolute; inset:-10%; border-radius:9999px; pointer-events:none; }
+.portal::before, .portal::after {
+  content:""; position:absolute; inset:0; border-radius:9999px;
+  background: conic-gradient(from 0deg, transparent 0 20%, var(--color-glow,.#e9d5ff) 21% 24%, transparent 25% 49%, var(--color-primary) 50% 54%, transparent 55% 79%, var(--color-accent-2) 80% 84%, transparent 85% 100%);
+  mask: radial-gradient(circle at center, transparent 58%, black 60%);
+  animation: spinSlow 8s linear infinite; filter: blur(1px);
+}
+.portal::after { inset:-4%; opacity:.7; filter: blur(6px) saturate(140%); animation-duration:12s; }
+.sparkles { position:absolute; inset:-15%; border-radius:9999px;
+  background: radial-gradient(2px 2px at 20% 30%, rgba(255,255,255,.9), transparent 60%), radial-gradient(1.5px 1.5px at 70% 60%, var(--color-glow,.#e9d5ff), transparent 60%), radial-gradient(1.5px 1.5px at 35% 80%, rgba(255,255,255,.9), transparent 60%), radial-gradient(2px 2px at 85% 40%, var(--color-primary), transparent 60%);
+  filter: blur(.3px); animation: floatY 6s ease-in-out infinite; pointer-events:none;
+}
+
+/* Headline visibility */
+.headline { color: #f8fafc; text-shadow: 0 2px 12px rgba(0,0,0,.35); }
+.caret { animation: blink 1s steps(1) infinite; display:inline-block; margin-left:.1em; }
+@keyframes blink { 50% { opacity: 0 } }
+/* Vertical caret for stacked letters */
+.caret-vert {
+  width: 3px;
+  height: 1em;
+  background: currentColor;
+  animation: blink 1s steps(1) infinite;
+  margin-top: 2px;
+}
+
+/* Fast rotating small squares around the avatar */
+.squares-ring{
+  /* How far the squares sit from center (outside the avatar). Tweak this. */
+  --ring-radius: clamp(130px, 28vmin, 360px);
+
+  position:absolute;
+  inset:-40%;                 /* make ring container larger than avatar */
+  pointer-events:none;
+  display:block;
+  animation: rotateFast 4.5s linear infinite;
+}
+
+
+.squares-ring {
+  --ring-radius: clamp(130px, 28vmin, 360px);
+
+  position: absolute;
+  inset: -40%;
+  pointer-events: none;
+  display: block;
+  
+  /* Rotate the whole container — the circles will orbit */
+  animation: orbit 4.5s linear infinite;
+}
+
+.squares-ring span {
+  --i: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--color-primary);
+  border-radius: 50%; /* make them circles */
+  box-shadow: 0 0 8px color-mix(in oklab, var(--color-primary) 60%, white 10%);
+  
+  transform: 
+    rotate(calc(var(--i) * 12deg)) /* spread them evenly */
+    translateX(var(--ring-radius)); /* push them outward */
+  transform-origin: 0 0;
+}
+
+/* Keyframes for the orbit rotation */
+@keyframes orbit {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
