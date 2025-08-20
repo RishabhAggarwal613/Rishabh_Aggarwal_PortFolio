@@ -54,8 +54,6 @@ A personal **Java Full Stack Portfolio** built with **Next.js 15**, **React 18**
 ├── src/
 │   ├── app/            # Next.js App Router pages
 │   ├── components/     # Reusable UI components
-│   ├── styles/         # Tailwind & global styles
-│   └── data/           # Skills, Projects, and Config
 ├── .gitignore
 ├── package.json
 ├── README.md
