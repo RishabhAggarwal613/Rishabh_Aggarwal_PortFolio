@@ -1,7 +1,21 @@
-// components/sections/Contact.jsx
+// components/sections/Contact.tsx
 "use client";
 
 import { useMemo, useState } from "react";
+
+type Action = {
+  label: string;
+  onClick: () => Promise<void>;
+};
+
+type ContactCard = {
+  key: "email" | "phone" | "whatsapp" | "telegram" | "linkedin" | "github";
+  label: string;
+  sub: string;
+  href: string;
+  icon: string;
+  actions?: Action[];
+};
 
 export default function Contact() {
   const NAME = "Rishabh Aggarwal";
@@ -12,7 +26,7 @@ export default function Contact() {
     linkedin: "https://www.linkedin.com/in/rishabhaggarwal999/",
     whatsapp: "https://wa.me/919354429093",
     telegram: "https://t.me/your_username", // TODO: replace your_username
-  };
+  } as const;
 
   // vCard download (works offline)
   const vcardHref = useMemo(() => {
@@ -31,8 +45,8 @@ export default function Contact() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [copied, setCopied] = useState(null);
-  const copy = async (text, key) => {
+  const [copied, setCopied] = useState<string | null>(null);
+  const copy = async (text: string, key: string) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(key);
@@ -42,7 +56,7 @@ export default function Contact() {
     }
   };
 
-  const cards = [
+  const cards: ContactCard[] = [
     {
       key: "email",
       label: "Email",
@@ -59,34 +73,10 @@ export default function Contact() {
       icon: "📞",
       actions: [{ label: copied === "phone" ? "Copied" : "Copy", onClick: () => copy(PHONE, "phone") }],
     },
-    {
-      key: "whatsapp",
-      label: "WhatsApp",
-      sub: "Chat on WhatsApp",
-      href: LINKS.whatsapp,
-      icon: "💬",
-    },
-    {
-      key: "telegram",
-      label: "Telegram",
-      sub: "DM on Telegram",
-      href: LINKS.telegram,
-      icon: "📨",
-    },
-    {
-      key: "linkedin",
-      label: "LinkedIn",
-      sub: "Professional profile",
-      href: LINKS.linkedin,
-      icon: "🔗",
-    },
-    {
-      key: "github",
-      label: "GitHub",
-      sub: "Open-source work",
-      href: LINKS.github,
-      icon: "🧑‍💻",
-    },
+    { key: "whatsapp", label: "WhatsApp", sub: "Chat on WhatsApp", href: LINKS.whatsapp, icon: "💬" },
+    { key: "telegram", label: "Telegram", sub: "DM on Telegram", href: LINKS.telegram, icon: "📨" },
+    { key: "linkedin", label: "LinkedIn", sub: "Professional profile", href: LINKS.linkedin, icon: "🔗" },
+    { key: "github", label: "GitHub", sub: "Open-source work", href: LINKS.github, icon: "🧑‍💻" },
   ];
 
   return (
@@ -162,18 +152,16 @@ export default function Contact() {
                         Open
                       </a>
 
-                      {"actions" in c ? (
-                        c.actions.map((a) => (
-                          <button
-                            key={a.label}
-                            onClick={a.onClick}
-                            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/15 transition"
-                            type="button"
-                          >
-                            {a.label}
-                          </button>
-                        ))
-                      ) : null}
+                      {c.actions?.map((a) => (
+                        <button
+                          key={a.label}
+                          onClick={a.onClick}
+                          className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/15 transition"
+                          type="button"
+                        >
+                          {a.label}
+                        </button>
+                      ))}
                     </div>
                   </div>
                 </div>
