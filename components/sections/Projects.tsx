@@ -113,7 +113,7 @@ export default function Projects() {
                   ].join(" ")}
                 >
                   <div
-                    ref={(el) => (cardRefs.current[p.title] = el)}
+                    ref={(el) => (cardRefs.current[p.title] = el;)}
                     className="rounded-2xl overflow-hidden border border-white/10 bg-[#0c0f1a]/80 backdrop-blur shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]"
                   >
                     {/* Media (hidden when expanded) */}
