@@ -1,7 +1,7 @@
 // components/Projects.tsx
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 type Project = {
   title: string;
@@ -76,6 +76,15 @@ export default function Projects() {
   const [openKey, setOpenKey] = useState<string | null>(null);
   const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
+  // stable ref setter to satisfy Ref<HTMLDivElement>
+  const setCardRef = useCallback(
+    (key: string) =>
+      (el: HTMLDivElement | null) => {
+        cardRefs.current[key] = el;
+      },
+    []
+  );
+
   useEffect(() => {
     if (openKey && cardRefs.current[openKey]) {
       cardRefs.current[openKey]?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -113,7 +122,7 @@ export default function Projects() {
                   ].join(" ")}
                 >
                   <div
-                    ref={(el) => (cardRefs.current[p.title] = el;)}
+                    ref={setCardRef(p.title)}
                     className="rounded-2xl overflow-hidden border border-white/10 bg-[#0c0f1a]/80 backdrop-blur shadow-[0_10px_40px_-12px_rgba(0,0,0,0.6)]"
                   >
                     {/* Media (hidden when expanded) */}
