@@ -1,4 +1,4 @@
-// components/sections/Contact.tsx
+// components/sections/Contact.jsx
 "use client";
 
 import { useMemo, useState } from "react";
@@ -28,10 +28,11 @@ export default function Contact() {
       "END:VCARD",
     ].join("\n");
     return `data:text/vcard;charset=utf-8,${encodeURIComponent(v)}`;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const [copied, setCopied] = useState<string | null>(null);
-  const copy = async (text: string, key: string) => {
+  const [copied, setCopied] = useState(null);
+  const copy = async (text, key) => {
     try {
       await navigator.clipboard.writeText(text);
       setCopied(key);
@@ -86,7 +87,7 @@ export default function Contact() {
       href: LINKS.github,
       icon: "🧑‍💻",
     },
-  ] as const;
+  ];
 
   return (
     <section id="contact" className="section">
@@ -109,9 +110,7 @@ export default function Contact() {
       <div className="relative rounded-2xl p-[1px] bg-gradient-to-r from-fuchsia-500/30 via-cyan-400/30 to-amber-400/30">
         <div className="panel rounded-2xl bg-white/5 backdrop-blur-md border border-white/10 p-6 md:p-10">
           <h2 className="title text-2xl md:text-3xl mb-2">Contact</h2>
-          <p className="text-white/85">
-            Open to internships and full-time roles. Let’s build something great.
-          </p>
+          <p className="text-white/85">Open to internships and full-time roles. Let’s build something great.</p>
 
           {/* Quick actions */}
           <div className="mt-4 flex flex-wrap items-center gap-2">
@@ -163,16 +162,18 @@ export default function Contact() {
                         Open
                       </a>
 
-                      {c.actions?.map((a) => (
-                        <button
-                          key={a.label}
-                          onClick={a.onClick}
-                          className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/15 transition"
-                          type="button"
-                        >
-                          {a.label}
-                        </button>
-                      ))}
+                      {"actions" in c ? (
+                        c.actions.map((a) => (
+                          <button
+                            key={a.label}
+                            onClick={a.onClick}
+                            className="rounded-lg border border-white/15 bg-white/10 px-3 py-1.5 text-xs text-white hover:bg-white/15 transition"
+                            type="button"
+                          >
+                            {a.label}
+                          </button>
+                        ))
+                      ) : null}
                     </div>
                   </div>
                 </div>
@@ -180,8 +181,7 @@ export default function Contact() {
                 {/* hover glow */}
                 <div
                   aria-hidden
-                  className="pointer-events-none absolute -z-10 -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition
-                             [background:radial-gradient(60%_120%_at_50%_-20%,rgba(124,58,237,0.25),transparent_60%),radial-gradient(60%_120%_at_50%_120%,rgba(6,182,212,0.18),transparent_60%)]"
+                  className="pointer-events-none absolute -z-10 -inset-1 rounded-2xl opacity-0 group-hover:opacity-100 transition [background:radial-gradient(60%_120%_at_50%_-20%,rgba(124,58,237,0.25),transparent_60%),radial-gradient(60%_120%_at_50%_120%,rgba(6,182,212,0.18),transparent_60%)]"
                 />
               </article>
             ))}
