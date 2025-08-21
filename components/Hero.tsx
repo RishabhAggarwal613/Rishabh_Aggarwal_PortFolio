@@ -159,7 +159,7 @@ export default function Hero() {
 
           {/* CTAs */}
           <div className="mt-6 flex flex-col sm:flex-row sm:flex-wrap justify-center md:justify-start items-stretch sm:items-center gap-3">
-            <a className="btn w-full sm:w-auto justify-center" href="/Rishabh_Aggarwal_Resume.pdf" download>
+            <a className="btn w-full sm:w-auto justify-center" href="/Rishabh_Resume.pdf" download>
               ⬇️ <span className="sr-only">Download</span> Resume
             </a>
             <a className="btn w-full sm:w-auto justify-center" href="#projects">
